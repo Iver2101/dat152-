@@ -1,6 +1,6 @@
 export default class taskList extends HTMLElement {
     #shadow;
-    //#callbacks = new Map();
+    #callbacks = new Map();
     //#callbackID = 0;
 #callbackStatus = null;
 
@@ -26,7 +26,7 @@ this.changestatusCallback(
     (id, newStatus) => {
         console.log(`User chose ${newStatus} for task ${id}`)
     })
-    this.#shadow.querySelector("select").addEventListener("click",this.#aaa.bind(this))
+    this.#shadow.querySelectorAll("select").forEach(x => x.addEventListener("click",this.#aaa.bind(this)))
 
 
     }
@@ -96,12 +96,14 @@ this.changestatusCallback(
             const id = event.target.id.slice(-1)
             const newStatus = event.target.value
             if (window.confirm(`Set '${this.#shadow.getElementById('label' + id).innerHTML} to ${newStatus}`))
-                this.#callbackStatus(id, newStatus);
+                console.log(this.#callbacks.get("status")(id, newStatus))
         }
     }
     changestatusCallback(func) {
         this.#callbackStatus = func;
-    }
+        this.#callbacks.set('status', func);
+        console.log(this.#callbacks)
+        }
 
     deleteTaskCallback(){
         const objs = this.#shadow.querySelectorAll("button.remove");
