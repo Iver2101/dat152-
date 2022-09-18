@@ -7,3 +7,4 @@ const taskl = document.querySelector("TASK-LIST")
 const taskb = document.querySelector("TASK-BOX")
 //taskl.addTaskCallBack(taskb.shadowRoot())
 taskl.setStatusesList(["WATING","ACTIVE","DONE"]);
+

@@ -1,8 +1,6 @@
 export default class taskList extends HTMLElement {
     #shadow;
     #callbacks = new Map();
-    //#callbackID = 0;
-#callbackStatus = null;
 
     #count = 0;
     constructor() {
@@ -26,8 +24,18 @@ this.changestatusCallback(
     (id, newStatus) => {
         console.log(`User chose ${newStatus} for task ${id}`)
     })
-    this.#shadow.querySelectorAll("select").forEach(x => x.addEventListener("click",this.#aaa.bind(this)))
-
+    this.#shadow.querySelectorAll("select").forEach(x => x.addEventListener("click",this.#statusChanged.bind(this)))
+this.enableAddTask()
+this.addTaskCallback(
+    () => { console.log("Click event on 'New task button'") }
+);
+this.#shadow.getElementById('addBtn').addEventListener("click", this.#aaa.bind(this));
+this.deleteTaskCallback(
+    (id) => {
+        console.log(`Click event on delete button of task ${id}`)
+    }
+);
+this.#shadow.querySelectorAll("button.remove").forEach(x => x.addEventListener("click",this.#aaaa.bind(this)))
 
     }
 
@@ -61,8 +69,9 @@ this.changestatusCallback(
         if(this.#count == 0) {
             this.#shadow.getElementById('topText').innerHTML = "No tasks were found"
 
+        } else {
+            this.#shadow.getElementById('topText').innerHTML = "Found " + this.#count + " tasks."
         }
-        this.#shadow.getElementById('topText').innerHTML = "Found " + this.#count + " tasks."
     }
 
     setStatusesList(names) {
@@ -83,31 +92,45 @@ this.changestatusCallback(
         this.#shadow.getElementById('addBtn').disabled = false;
     }   
 
+    #aaa(event) {
+        if (this.#callbacks.get("addTask") != null) this.#callbacks.get("addTask")()
+    }
+
     addTaskCallback(func) {
-        this.#shadow.getElementById('addBtn').addEventListener("click", func);
+        this.#callbacks.set('addTask', func)
 
     }
 
 
-    #aaa(event) {
+    #statusChanged(event) {
         // finn nye status  legg status, og id i data
         // Hvis callbackStatus ikke er null
-        if(this.#callbackStatus != null) {
+        if(this.#callbacks.get("status") != null && event.target.value != '<modify>') {
             const id = event.target.id.slice(-1)
             const newStatus = event.target.value
             if (window.confirm(`Set '${this.#shadow.getElementById('label' + id).innerHTML} to ${newStatus}`))
-                console.log(this.#callbacks.get("status")(id, newStatus))
+                this.#callbacks.get("status")(id, newStatus)
         }
     }
     changestatusCallback(func) {
-        this.#callbackStatus = func;
         this.#callbacks.set('status', func);
-        console.log(this.#callbacks)
         }
 
-    deleteTaskCallback(){
-        const objs = this.#shadow.querySelectorAll("button.remove");
-        //objs.forEach(x => x.addEventListener("click", ) )
+
+
+
+    #aaaa(event) {
+        if(this.#callbacks.get("delete") != null) {
+            const id = event.target.id.slice(-1)
+            if(window.confirm(`Delete task ${this.#shadow.getElementById('label' + id).innerHTML}`)) {
+                this.#callbacks.get("delete")(id)
+            }
+        }
+    }    
+    
+        
+    deleteTaskCallback(func){
+        this.#callbacks.set('delete', func)
     }
 
 
