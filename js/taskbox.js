@@ -1,19 +1,11 @@
 export default class taskBox extends HTMLElement {
-    // show() - Opens (shows) the modal box in the browser window.
-    //setStatuseslist(list) – Sets the list of possible task statuses.
-    //newtaskCallback(callback) - Adds a callback to run at click on the Add task button.
-    //close() - Removes the modal box from the view.
+
     #shadow;
     #callback;
 
 
     constructor() {
         super();
-
-        //modal
-        this.modalBox;
-        //button that opens the modal
-
         this.#shadow = this.attachShadow({ mode: 'closed' });
         this.#createHTML();
         this.#shadow.getElementById("addBtn").addEventListener("click", this.#newTask.bind(this))
@@ -58,11 +50,6 @@ export default class taskBox extends HTMLElement {
    
     #createHTML(){
         const html = `
-        <head>
-            <link rel="stylesheet" href="taskbox.css">
-        </head>
-        
-       
             <label for="title">Title : </label>
             <input type="text" id="newTasktxt">
             <label for="status">Status : </label>
@@ -78,7 +65,6 @@ export default class taskBox extends HTMLElement {
     wrapper.id = "taskbox";
     wrapper.insertAdjacentHTML('beforeend', html);
     this.#shadow.appendChild(wrapper);
-    this.modalBox = wrapper;
     return wrapper;
     }
 

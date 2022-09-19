@@ -1,3 +1,9 @@
+import TaskList from './tasklist.js'
+import TaskBox from './taskbox.js'
+
+customElements.define('task-list', TaskList);
+customElements.define('task-box', TaskBox);
+
 const taskl = document.querySelector("TASK-LIST")
 const taskb = document.querySelector("TASK-BOX")
 
@@ -5,7 +11,7 @@ const taskb = document.querySelector("TASK-BOX")
 taskb.newtaskCallback(addTasks.bind(this));
 taskl.changestatusCallback(updateTask.bind(this));
 taskl.deleteTaskCallback(deleteTask.bind(this));
-taskl.addTaskCallback(taskb.show());
+taskl.addTaskCallback(taskb.show.bind(taskb));
 
 
 

@@ -1,5 +1,5 @@
-import TaskList from './comp.js'
-import TaskBox from './test.js'
+import TaskList from './tasklist.js'
+import TaskBox from './taskbox.js'
 customElements.define('task-list', TaskList);
 customElements.define('task-box', TaskBox);
 
@@ -8,3 +8,4 @@ const taskb = document.querySelector("TASK-BOX")
 
 
 
+taskl.addTaskCallback(taskb.show.bind(this));

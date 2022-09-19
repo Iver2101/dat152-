@@ -9,34 +9,6 @@ export default class taskList extends HTMLElement {
         this.#createHTML();
         this.#shadow.getElementById('addBtn').addEventListener("click", this.#addTask.bind(this));
 
-        const newtask = {
-    "id": 1,
-    "title": "Do DAT152 home work",
-    "status": "ACTIVE"
-};
-
-const newtask2 = {
-    "id": 2,
-    "title": "Do DAT152 home work",
-    "status": "ACTIVE"
-};
-this.setStatusesList(["WATING","ACTIVE","DONE"]);
-
-this.showTask(newtask2);
-
-this.showTask(newtask);
-
-this.changestatusCallback(
-    (id, newStatus) => {
-        console.log(`User chose ${newStatus} for task ${id}`)
-    })
-this.enableAddTask()
-this.deleteTaskCallback(
-    (id) => {
-        console.log(`Click event on delete button of task ${id}`)
-    }
-);
-
     }
  
 
@@ -102,7 +74,6 @@ this.deleteTaskCallback(
 
     addTaskCallback(func) {
         this.#callbacks.set('addTask', func)
-
     }
 
 
