@@ -36,7 +36,6 @@ this.deleteTaskCallback(
         console.log(`Click event on delete button of task ${id}`)
     }
 );
-this.#shadow.querySelectorAll("button.remove").forEach(x => x.addEventListener("click",this.#deleteTask.bind(this)))
 
     }
  
@@ -52,6 +51,7 @@ this.#shadow.querySelectorAll("button.remove").forEach(x => x.addEventListener("
         this.#shadow.getElementById("header").insertAdjacentHTML('afterend', content);
         this.#shadow.getElementById('topText').innerHTML = "Found " + this.#count + " tasks."
         this.#shadow.querySelector("select").addEventListener("click", this.#statusChanged.bind(this));
+        this.#shadow.querySelector("button.remove").addEventListener("click",this.#deleteTask.bind(this))
         this.#setStatuses()
 
 
