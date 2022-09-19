@@ -4,8 +4,9 @@ export default class taskBox extends HTMLElement {
     //newtaskCallback(callback) - Adds a callback to run at click on the Add task button.
     //close() - Removes the modal box from the view.
     #shadow;
+    #callback;
+    #ids = 0;
 
-    //  allStatuses[];
 
     constructor() {
         super();
@@ -13,71 +14,51 @@ export default class taskBox extends HTMLElement {
         //modal
         this.modalBox;
         //button that opens the modal
-        this.addNewTaskBtn;
 
         this.#shadow = this.attachShadow({ mode: 'closed' });
         this.#createHTML();
-        this.#createCSSlink();
-
-        const btn = this.#shadow.querySelector("button");
-        btn.addEventListener("click", () => {
-            const modal = this.#shadow.querySelector(".modalBox");
-            console.log(btn);
-            console.log(modal);
-            const input = modal.getElementsByTagName("input")[0].value;
-            const status = modal.getElementsByTagName("select")[0].value;
-            const task = {title: input, status: status};
-
-            this.onsubmit(task);
-        }, true);
-
-        const close = this.#shadow.querySelector(".close");
-        close.addEventListener("click", () => {
-            this.close();
-        }, true);
+        this.#shadow.getElementById("addBtn").addEventListener("click", this.#newTask.bind(this))
+        this.#shadow.getElementById("closeBtn").addEventListener("click", () => this.close())
     }
 
     show() {
-        this.#shadow.querySelector(".modalBox").style.display = "block";
-        
+        this.#shadow.querySelector("dialog").showModal()
     }
-   
- //   show2 () {
-  //      var modalbox = document.getElementById('modalbox')
-  //      modalbox.innerHTML('<p></p>')
-   //     }
+
+
 
    close () {
-        var span = document.getElementsByClassName("close")[0]
-        span.onclick = function() {
-            modal.style.display = "none";
-        }
-        //this.#shadow.querySelector(".modalBox").style.display = "none";
+        this.#shadow.querySelector("dialog").close()
+
     }
 
-    
-    setStatusesList() {
 
+
+
+    setStatusesList(names) {
+        const elem = this.#shadow.querySelector("select");
+        let out = "";
+        names.forEach(x =>  out = out.concat(`<option value=${x}>${x}</option>`))
+        elem.insertAdjacentHTML('beforeend',out);
     }
 
     newtaskCallback(callback) {
-        this.onsubmit = callback;
+        this.#callback = callback;
+
     }
 
-    //#createHTML() {
-      //  const wrapper = document.createElement('div');
-      //  wrapper.id = "taskbox";
-      //  const html = 
-      //  `
-      //  <div class="modal">
-      //  <span class="close">&times;</span>
-      //  </div>
-      //  </div>
-      //  `;
-      //  wrapper.insertAdjacentHTML('beforeend',html);
-      //  this.#shadow.appendChild(wrapper);
+
+    #newTask(event) {
+        const task = {
+            "id" : this.#ids++,
+            "title" : this.#shadow.getElementById("newTasktxt").value,
+            "status" : this.#shadow.querySelector("select").value
+        }
+        if(this.#callback != null) this.#callback(task)
         
-    //}
+    }
+
+
     #createCSSlink() {
         // create a new link tag
         const link = document.createElement('link');
@@ -94,31 +75,31 @@ export default class taskBox extends HTMLElement {
 
     }
 
+   
     #createHTML(){
         const html = `
-        <div class = "modalBox-content">
-            <span class="close">&times;</span>
-            
-            <table>
-                <tr><th>Title:</th>
-                <td><input type="text"/></td></tr>
-                <tr><th>Status:</th>
-                <td><select></select></td><tr>
-            </table>
-            
-            <p><button class = "delBtn" type="submit">Add Task</button></p>
-        </div>
-    `;
-    const wrapper = document.createElement('div');
-    wrapper.classList = "modalBox";
-    console.log(this.#shadow.querySelector(".modalBox"));
+        <head>
+            <link rel="stylesheet" href="taskbox.css">
+        </head>
+        
+       
+            <label for="title">Title : </label>
+            <input type="text" id="newTasktxt">
+            <label for="status">Status : </label>
+            <select id="select">
+            </select>
+            <button id=addBtn>Add task</button>
+            <button id=closeBtn> X </button>
+
+
+    `
+        
+    const wrapper = document.createElement('dialog');
     wrapper.id = "taskbox";
-    wrapper.insertAdjacentElement('beforeend', html);
+    wrapper.insertAdjacentHTML('beforeend', html);
     this.#shadow.appendChild(wrapper);
     this.modalBox = wrapper;
     return wrapper;
-
     }
-    
 
 }
