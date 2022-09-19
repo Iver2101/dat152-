@@ -7,5 +7,4 @@ const taskl = document.querySelector("TASK-LIST")
 const taskb = document.querySelector("TASK-BOX")
 
 
-taskl.addTaskCallback(() => {taskb.show()})
 

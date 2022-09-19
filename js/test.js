@@ -5,7 +5,6 @@ export default class taskBox extends HTMLElement {
     //close() - Removes the modal box from the view.
     #shadow;
     #callback;
-    #ids = 0;
 
 
     constructor() {
@@ -44,35 +43,16 @@ export default class taskBox extends HTMLElement {
 
     newtaskCallback(callback) {
         this.#callback = callback;
-
     }
 
 
     #newTask(event) {
         const task = {
-            "id" : this.#ids++,
             "title" : this.#shadow.getElementById("newTasktxt").value,
             "status" : this.#shadow.querySelector("select").value
         }
         if(this.#callback != null) this.#callback(task)
         
-    }
-
-
-    #createCSSlink() {
-        // create a new link tag
-        const link = document.createElement('link');
-
-        // set properties of link tag
-        link.href = 'taskbox.css';
-        link.rel = 'stylesheet';
-        link.type = 'text/css';
-
-        //append link element to html
-        document.body.appendChild(link)
-        // eller? : this.#shadow.appendChild(link);
-        return link;
-
     }
 
    
